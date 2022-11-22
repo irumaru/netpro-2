@@ -38,7 +38,7 @@ public class Figure extends Coord{
 		this.fill = fill;
 	}
 	
-	public Integer[] getWidth() {
+	public Integer[] getSize() {
 		return new Integer[] {width, height};
 	}
 	

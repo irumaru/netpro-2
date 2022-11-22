@@ -61,7 +61,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 	@Override public void paint(Graphics g){
 		//円を表示(レンダリング)
 		Figure f;
-		System.out.println(objList.size());
 		for(int i = objList.size() - 1; i >= 0; i --) {
 			f = objList.get(i);
 			f.paint(g);
@@ -99,6 +98,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 				objList.remove((int)size.getValue());
 			}
 		}
+		
+		//オブジェクト数を表示
+		System.out.println("オブジェクト数: " + objList.size());
 		
 		//表示(レンダリング)
 		repaint();
