@@ -12,7 +12,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-//import Utility;
 
 //フレームオブジェクトを継承
 public class Paint extends Frame implements MouseListener,MouseMotionListener {
@@ -26,6 +25,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 	TextFieldUtility height;
 	ChoiceFieldUtility fill;
 	ChoiceFieldUtility shape;
+	ButtonUtility color;
 	
 	int objPrintCount = 0;
 	
@@ -40,8 +40,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 				System.exit(0);
 			}});
 		f.setVisible(true);
-		
-		
 	}
 	
 	Paint(){
@@ -56,6 +54,12 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 		height = new TextFieldUtility(this, "高さ", "80");
 		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		shape = new ChoiceFieldUtility(this, "図形", new String []{"円形", "四角形"});
+		color = new ButtonUtility(this, "色の指定", "詳細");
+		
+		//JColorChooser colorchooser = new JColorChooser();
+		//Color color = colorchooser.showDialog(this, "色の選択", Color.white);
+		
+		//System.out.println(color);
 	}
 	
 	//描画(フレームごと)
