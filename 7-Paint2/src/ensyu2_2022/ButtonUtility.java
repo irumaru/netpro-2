@@ -2,8 +2,10 @@ package ensyu2_2022;
 
 import java.awt.Button;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ButtonUtility extends Utility{
+public class ButtonUtility extends Utility implements ActionListener{
 	Button button;
 	
 	ButtonUtility(Frame frame, String labelName, String buttonName){
@@ -14,4 +16,7 @@ public class ButtonUtility extends Utility{
 		
 		panel.add(button);
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {}
 }

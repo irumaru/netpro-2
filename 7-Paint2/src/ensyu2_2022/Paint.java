@@ -2,7 +2,6 @@
 
 package ensyu2_2022;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -25,7 +24,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 	TextFieldUtility height;
 	ChoiceFieldUtility fill;
 	ChoiceFieldUtility shape;
-	ButtonUtility color;
+	ColorPickerUtility color;
 	
 	int objPrintCount = 0;
 	
@@ -54,7 +53,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 		height = new TextFieldUtility(this, "高さ", "80");
 		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		shape = new ChoiceFieldUtility(this, "図形", new String []{"円形", "四角形"});
-		color = new ButtonUtility(this, "色の指定", "詳細");
+		color = new ColorPickerUtility(this);
 		
 		//JColorChooser colorchooser = new JColorChooser();
 		//Color color = colorchooser.showDialog(this, "色の選択", Color.white);
@@ -123,7 +122,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener {
 		
 		//色をつける
 		//100,255,255 リムル
-		obj.setColor(new Color(100, 255, 255));
+		obj.setColor(color.getColor());
 		
 		//塗りつぶし
 		obj.setFill(fill.getChoice() == 1);
