@@ -12,11 +12,12 @@ public class ButtonUtility extends Utility implements ActionListener{
 		super(frame, labelName);
 		
 		button = new Button(buttonName);
+		//アクションリスナーとして自インスタンスを指定
 		button.addActionListener(this);
 		
 		panel.add(button);
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {}
+	//アクションリスナーとして実行されるメソッド(子クラスで宣言)
+	@Override public void actionPerformed(ActionEvent e) {}
 }
