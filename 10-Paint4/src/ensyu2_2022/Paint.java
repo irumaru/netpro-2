@@ -1,8 +1,6 @@
 package ensyu2_2022;
 
-import java.awt.Button;
-import java.awt.Checkbox;
-import java.awt.CheckboxGroup;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -19,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+
 //フレームオブジェクトを継承した、Paintクラスを宣言
 public class Paint extends Frame implements MouseListener,MouseMotionListener, ActionListener{
 	//FigureインスタンスとFigureクラスを継承したクラスのインスタンスを格納するリスト状のプロパティを、ArrayList型で宣言
@@ -27,22 +26,25 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	//図形の基準点x,yプロパティを宣言
 	int x, y;
 	
-	CheckboxGroup cbg; //メニュー
-	Checkbox c1, c2, c3, c4; //メニューの要素
-	Button end; //終了ボタン
+	//CheckboxGroup cbg; //メニュー
+	//Checkbox c1, c2, c3, c4; //メニューの要素
+	//Button end; //終了ボタン
 	int mode = 0; //描画モード(1: 1点指定図形, 2: 2点指定図形)
 	
 	//上記と同じインスタンスを格納するプロパティを宣言
 	//実際に描画する図形
 	Figure obj;
 	
+	//描画時刻
+	long now, old;
+	
 	//※1で利用するプロパティを宣言
 	// TextFieldUtility size;
 	// TextFieldUtility width;
 	// TextFieldUtility height;
-	// ChoiceFieldUtility fill;
-	// ChoiceFieldUtility shape;
-	// ColorPickerUtility color;
+	ChoiceFieldUtility fill;
+	ChoiceFieldUtility shape;
+	ColorPickerUtility color;
 	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
@@ -51,7 +53,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//ウィンドウサイズを設定
 		f.setSize(800,600);
 		//画面上の設定メニューを中央上から配置するように指定
-		// f.setLayout(new FlowLayout(FlowLayout.CENTER));
+		f.setLayout(new FlowLayout(FlowLayout.CENTER));
 		//ウィンドウのタイトルを設定
 		f.setTitle("ペイントアプリ");
 		//終了時の処理を設定
@@ -75,8 +77,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		setLayout(null);
+		//setLayout(null);
 		//画面作成
+		/*
 		cbg = new CheckboxGroup(); //Checkboxの集合を作成
 		c1 = new Checkbox("丸", cbg, true); //丸メニューの作成
 		c1.setBounds(560, 30, 60, 30); //丸メニューの座標指定
@@ -97,6 +100,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		end = new Button("終了");
 		end.setBounds(560, 300, 60, 30);
 		add(end);
+		*/
 		
 		//※1で用意したプロパティへ、各種インスタンスを代入
 		
@@ -109,14 +113,17 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		// height = new TextFieldUtility(this, "高さ", "80");
 		//画面上に塗りつぶしの設定項目を追加
 		//引数でメニュー内容を指示
-		// fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
+		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		//画面上に図形の設定項目を追加
-		// shape = new ChoiceFieldUtility(this, "図形", new String []{"円形", "四角形"});
+		shape = new ChoiceFieldUtility(this, "図形", new String []{"円", "楕円", "四角", "線"});
 		//画面上にカラーピッカーを開いて色を選択するボタンを追加
-		// color = new ColorPickerUtility(this);
+		color = new ColorPickerUtility(this);
 		
 		//終了ボタン処理の登録
-		end.addActionListener(this);
+		//end.addActionListener(this);
+		
+		//描画時刻の初期化
+		now = old = 0;
 	}
 	
 	public void save(String fname) {
@@ -150,12 +157,15 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	
 	//描画(フレームごと)
 	@Override public void paint(Graphics g){
+		
+		
 		//各種図形を格納
 		Figure f;
 		//objListをIndexが大きい方から順番に描画
 		//大きい方から描画することで、最も最近追加した図形が一番上に表示される
 		//Warning 3回目のサンプルと違う
-		for(int i = objList.size() - 1; i >= 0; i --) {
+		//for(int i = objList.size() - 1; i >= 0; i --) {
+		for(int i = 0; i < objList.size(); i ++) {
 			f = objList.get(i);
 			f.paint(g);
 		}
@@ -173,31 +183,37 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	@Override public void mousePressed(MouseEvent e){
 		//Warning ほぼ全て書き換え
 		
-		Checkbox c;
+		//Checkbox c;
 		
 		x = e.getX();
 		y = e.getY();
 		
-		c = cbg.getSelectedCheckbox(); //選択されたチェックボックスの取得
+		//c = cbg.getSelectedCheckbox(); //選択されたチェックボックスの取得
+		Integer s = shape.getChoice();
 		obj = null;
 		
-		if(c == c1) { //丸
-			mode = 1;
-			obj = new Dot();
-		}else if(c == c2) { //円
+		if(s == 0) { //円
 			mode = 2;
 			obj = new Circle();
-		}else if(c == c3) { //四角
+		}else if(s == 1) {
+			mode = 2;
+			obj = new Oval();
+		}else if(s == 2) { //四角
 			mode = 2;
 			obj = new Rect();
-		}else if(c == c4) { //線
+		}else if(s == 3) { //線
 			mode = 2;
 			obj = new Line();
+		}else {
+			System.err.println("存在しない図形番号です。");
+			System.exit(1);
 		}
 		
 		if(obj != null) {
-			obj.moveto(x,  y);
-			repaint(); //再描画
+			obj.moveto(x, y);
+			obj.setColor(color.getColor());
+			obj.setFill(fill.getChoice() == 1);
+			repaint();
 		}
 		
 		//図形数を表示
@@ -241,7 +257,12 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 			obj.setWH(x - obj.x, y - obj.y);//幅と高さの指定
 		}
 		
-		repaint();
+		//描画を安定させるため、FPSを制限
+		now = System.currentTimeMillis();
+		if(70 < this.now - this.old) {
+			repaint();
+			old = now;
+		}
 	}
 	//移動
 	@Override public void mouseMoved(MouseEvent e){}
