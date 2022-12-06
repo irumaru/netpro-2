@@ -17,19 +17,8 @@ public class Oval extends Figure{
 		int width = this.width;
 		int height = this.height;
 		
-		//widthが-の値の時に反対側に拡張
-		if(width < 0) {
-			//x = x + width;
-			width = - width;
-		}
-		//heightが-の値の時に反対側に拡張
-		if(height < 0) {
-			//y = y + height;
-			height = - height;
-		}
-		
-		int oWidth = (int)(width * Math.pow(2, 0.5));
-		int oHeight = (int)(height * Math.pow(2, 0.5));
+		width = (int)(Math.sqrt((double)2)*Math.abs(width))*2;
+		height = (int)(Math.sqrt((double)2)*Math.abs(height))*2;
 		
 		//width = iWidth + (width - iWidth) / 2;
 		//height = iHeight + (height - iHeight) / 2; 
@@ -43,6 +32,6 @@ public class Oval extends Figure{
 		//else
 			//塗りつぶしなし
 			//g.drawOval(x, y, width, height);
-			g.drawOval(x - (width / 2), y - (height / 2), oWidth, oHeight);
+			g.drawOval(x - (width / 2), y - (height / 2), width, height);
 	}
 }
