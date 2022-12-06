@@ -11,7 +11,7 @@ public class Rikka extends Takanasi{
 	}
 	
 	@Override public void fukyo() {
-		//super.fukyo(); //親メソッドを呼び出す
+		super.fukyo(); //親メソッドを呼び出す
 		System.out.println("不可視境界線はある");
 	}
 }
