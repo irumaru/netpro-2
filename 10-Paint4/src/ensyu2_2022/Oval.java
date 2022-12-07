@@ -17,21 +17,16 @@ public class Oval extends Figure{
 		int width = this.width;
 		int height = this.height;
 		
+		//楕円に内接する四角形
 		width = (int)(Math.sqrt((double)2)*Math.abs(width))*2;
 		height = (int)(Math.sqrt((double)2)*Math.abs(height))*2;
-		
-		//width = iWidth + (width - iWidth) / 2;
-		//height = iHeight + (height - iHeight) / 2; 
-		
-		int r = (int)Math.sqrt((double)(Math.pow(width, 2) + Math.pow(height, 2)));
-		
+
 		//円の描画
-		//if(fill)
+		if(fill)
 			//塗りつぶしあり
-			//g.fillOval(x - r, y - r, r * 2, r * 2);
-		//else
+			g.fillOval(x - (width / 2), y - (height / 2), width, height);
+		else
 			//塗りつぶしなし
-			//g.drawOval(x, y, width, height);
 			g.drawOval(x - (width / 2), y - (height / 2), width, height);
 	}
 }
