@@ -21,6 +21,7 @@ public class Main {
 		
 		t.fukyo();
 		
+		t.nyoro(10);
 		
 		//c1.takanasi();
 	}
