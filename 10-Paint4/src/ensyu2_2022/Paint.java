@@ -3,6 +3,7 @@ package ensyu2_2022;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -48,6 +49,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	UndoButton undo;
 	RedoButton redo;
 	
+	Image offImage;
+	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
 		//ペイントインスタンスを作成して格納
@@ -78,6 +81,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		
+		//this.offImage = createImage(800, 600); //イメージバッファ生成
 
 		//setLayout(null);
 		//画面作成
@@ -163,20 +168,27 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	
 	//描画(フレームごと)
 	@Override public void paint(Graphics g){
+		//ダブルバッファリング
+		//http://www.gamesite8.com/archives/615401.html
 		
+		//イメージバッファ生成
+		offImage = createImage(800, 600);
+		Graphics gv = offImage.getGraphics();
+		//ウィンドウに合わせて四角で初期化
+		gv.clearRect(0,  0, 800, 600);
 		
-		//各種図形を格納
+		//各種図形を描画
 		Figure f;
-		//objListをIndexが大きい方から順番に描画
-		//大きい方から描画することで、最も最近追加した図形が一番上に表示される
-		//Warning 3回目のサンプルと違う
-		//for(int i = objList.size() - 1; i >= 0; i --) {
 		for(int i = 0; i < objList.size(); i ++) {
 			f = objList.get(i);
-			f.paint(g);
+			f.paint(gv);
 		}
 		
-		if(mode >= 1) obj.paint(g);
+		if(mode >= 1) obj.paint(gv);
+		
+		//バッファされたイメージを描画
+		g.drawImage(offImage, 0, 0, 800, 600, this);
+		
 	}
 	
 	//終了ボタン
