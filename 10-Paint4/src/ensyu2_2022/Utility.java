@@ -18,7 +18,7 @@ public class Utility {
 		//インスタンスの作成
 		panel = new Panel();
 		//グリッドレイアウトで3行1列に設定
-		panel.setLayout(new GridLayout(3, 1));
+		panel.setLayout(new GridLayout(2, 1));
 		
 		//パネルをフレーム(描画する画面)に追加
 		frame.add(panel);
