@@ -49,7 +49,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	UndoButton undo;
 	RedoButton redo;
 	
-	Image offImage;
+	private Image offImage;
+	private Graphics gv;
 	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
@@ -76,13 +77,12 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	
 	//コンストラクタの宣言(Paintインスタンス作成時に実行される)
 	Paint(){
+		
 		//Figure型のインスタンスをリスト上に格納できるArrayListインスタンスを作成し、objListプロパティへ代入
 		objList = new ArrayList<Figure>();
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		
-		//this.offImage = createImage(800, 600); //イメージバッファ生成
 
 		//setLayout(null);
 		//画面作成
@@ -172,8 +172,11 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//http://www.gamesite8.com/archives/615401.html
 		
 		//イメージバッファ生成
-		offImage = createImage(800, 600);
-		Graphics gv = offImage.getGraphics();
+		if(offImage == null) {
+			offImage = createImage(800, 600);
+			gv = offImage.getGraphics();
+		}
+		
 		//ウィンドウに合わせて四角で初期化
 		gv.clearRect(0,  0, 800, 600);
 		
@@ -188,7 +191,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		
 		//バッファされたイメージを描画
 		g.drawImage(offImage, 0, 0, 800, 600, this);
-		
+
 	}
 	
 	//終了ボタン
@@ -281,7 +284,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		
 		//描画を安定させるため、FPSを制限
 		now = System.currentTimeMillis();
-		if(70 < this.now - this.old) {
+		if(33 < this.now - this.old) {
 			repaint();
 			old = now;
 		}
