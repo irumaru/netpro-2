@@ -6,16 +6,21 @@ import java.util.ArrayList;
 
 public class UndoButton extends ButtonUtility{
 	ArrayList<Figure> objList;
+	ArrayList<Figure> undoObjList;
 	Frame frame;
 	
 	UndoButton(Frame frame, ArrayList<Figure> objList) {
 		super(frame, "", "Undo");
 		this.objList = objList;
+		this.undoObjList = new ArrayList<Figure>();
 		this.frame = frame;
 	}
 	
 	@Override public void actionPerformed(ActionEvent e) {
-		objList.remove(objList.size() - 1);
-		frame.repaint();
+		if(objList.size() != 0) {
+			undoObjList.add(objList.get(objList.size() - 1));
+			objList.remove(objList.size() - 1);
+			frame.repaint();
+		}
 	}
 }

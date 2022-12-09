@@ -46,6 +46,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	ChoiceFieldUtility shape;
 	ColorPickerUtility color;
 	UndoButton undo;
+	RedoButton redo;
 	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
@@ -121,6 +122,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		color = new ColorPickerUtility(this);
 		//Undo
 		undo = new UndoButton(this, objList);
+		//Redo
+		redo = new RedoButton(this, objList, undo.undoObjList); 
 		
 		//終了ボタン処理の登録
 		//end.addActionListener(this);
@@ -223,9 +226,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//System.out.println("オブジェクト数: " + objList.size());
 		
 		//ディバッグ
-		for(int i = 0; i < objList.size(); i ++) {
-			System.out.println("i="+i+" width="+objList.get(i).getSize()[0]);
-		}
+		//for(int i = 0; i < objList.size(); i ++) {
+		//	System.out.println("i="+i+" width="+objList.get(i).getSize()[0]);
+		//}
 		System.out.println();
 	}
 	//離されたとき
@@ -239,7 +242,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 			obj.setWH(x - obj.x, y - obj.y);
 		
 		if(mode >= 1) {
-			objList.add(obj);
+			objList.add(obj);//最後尾に追加
 			obj = null;
 		}
 		
