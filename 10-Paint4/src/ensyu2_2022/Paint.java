@@ -115,7 +115,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		//引数でメニュー内容を指示
 		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		//画面上に図形の設定項目を追加
-		shape = new ChoiceFieldUtility(this, "図形", new String []{"円", "楕円", "四角", "線"});
+		shape = new ChoiceFieldUtility(this, "図形", new String []{"円", "楕円", "四角", "線", "折れ線"});
 		//画面上にカラーピッカーを開いて色を選択するボタンを追加
 		color = new ColorPickerUtility(this);
 		//Undo
@@ -168,6 +168,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	
 	//押されたとき
 	@Override public void mousePressed(MouseEvent e){
+		if(e.getButton() == MouseEvent.BUTTON3) {
+			return;
+		}
 		//Warning ほぼ全て書き換え
 		
 		//Checkbox c;
@@ -191,6 +194,10 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		}else if(s == 3) { //線
 			mode = 2;
 			obj = new Line();
+		}else if(s == 4) { //折れ線
+			System.out.println("折れ線");
+			mode = 3;
+			obj = new Polyline();
 		}else {
 			System.err.println("存在しない図形番号です。");
 			System.exit(1);
@@ -214,6 +221,10 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	}
 	//離されたとき
 	@Override public void mouseReleased(MouseEvent e){
+		if(e.getButton() == MouseEvent.BUTTON3) {
+			return;
+		}
+		
 		x = e.getX();
 		y = e.getY();
 		
@@ -232,7 +243,22 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		repaint();
 	}
 	//クリックされた
-	@Override public void mouseClicked(MouseEvent e){}
+	@Override public void mouseClicked(MouseEvent e){
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			return;
+		}
+		
+		x = e.getX();
+		y = e.getY();
+		
+		if(mode == 3) {
+			System.out.println("Enter 3");
+			
+			Polyline objp = (Polyline)obj;
+			objp.setXY(x, y);
+			obj = (Figure)objp;
+		}
+	}
 	//Windowに入った
 	@Override public void mouseEntered(MouseEvent e){}
 	//WIndowを出た
@@ -246,6 +272,10 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			obj.moveto(x, y);
 		}else if(mode == 2) {
 			obj.setWH(x - obj.x, y - obj.y);//幅と高さの指定
+		}else if(mode == 3) {
+			Polyline objp = (Polyline)obj;
+			objp.forcusXY(x, y);
+			obj = (Figure)objp;
 		}
 		
 		//描画を安定させるため、FPSを制限
