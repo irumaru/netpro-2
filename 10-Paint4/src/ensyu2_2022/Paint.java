@@ -11,10 +11,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -48,6 +46,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	ColorPickerUtility color;
 	UndoButton undo;
 	RedoButton redo;
+	Save save;
+	Load load;
 	
 	private Image offImage;
 	private Graphics gv;
@@ -72,7 +72,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//ファイル読み込み
 		//if(args.length == 1)
 			//f.load(args[0]);
-		f.load("paint.dat");
+		//f.load("paint.dat");
 	}
 	
 	//コンストラクタの宣言(Paintインスタンス作成時に実行される)
@@ -128,7 +128,11 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//Undo
 		undo = new UndoButton(this, objList);
 		//Redo
-		redo = new RedoButton(this, objList, undo.undoObjList); 
+		redo = new RedoButton(this, objList, undo);
+		//Load
+		load = new Load(this, objList);
+		//Save
+		save = new Save(this, objList, load);
 		
 		//終了ボタン処理の登録
 		//end.addActionListener(this);
@@ -147,23 +151,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		}catch(IOException e) {
 			System.err.println("ファイルへの書き込みに失敗しました。");
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	
-	public void load(String fname) {
-		try {
-			FileInputStream fis = new FileInputStream(fname);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			objList = (ArrayList<Figure>)ois.readObject();
-			ois.close();
-			fis.close();
-		}catch(IOException e) {
-		}catch(ClassNotFoundException e) {
-		}
-		
-		//再描画
-		repaint();
 	}
 	
 	//描画(フレームごと)

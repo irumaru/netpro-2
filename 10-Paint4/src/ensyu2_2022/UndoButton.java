@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class UndoButton extends ButtonUtility{
 	ArrayList<Figure> objList;
 	ArrayList<Figure> undoObjList;
+	Integer objSize;
 	Frame frame;
 	
 	UndoButton(Frame frame, ArrayList<Figure> objList) {
@@ -20,6 +21,8 @@ public class UndoButton extends ButtonUtility{
 		if(objList.size() != 0) {
 			undoObjList.add(objList.get(objList.size() - 1));
 			objList.remove(objList.size() - 1);
+			objSize = objList.size();//remove後
+			System.out.println(objSize);
 			frame.repaint();
 		}
 	}
