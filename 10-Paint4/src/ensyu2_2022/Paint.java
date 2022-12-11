@@ -44,6 +44,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	ClearButton clear;
 	Save save;
 	Load load;
+	ExportImage export;
 	
 	private Image offImage;
 	private Graphics gv;
@@ -127,6 +128,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		load = new Load(this, objList);
 		//Save
 		save = new Save(this, objList, load);
+		//ExportImage
+		export = new ExportImage(this);
 		
 		//終了ボタン処理の登録
 		//end.addActionListener(this);
