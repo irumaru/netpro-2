@@ -4,21 +4,16 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 
 //フレームオブジェクトを継承した、Paintクラスを宣言
-public class Paint extends Frame implements MouseListener,MouseMotionListener, ActionListener{
+public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	//FigureインスタンスとFigureクラスを継承したクラスのインスタンスを格納するリスト状のプロパティを、ArrayList型で宣言
 	//全ての図形は、objListへ格納される
 	ArrayList<Figure> objList;
@@ -46,6 +41,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 	ColorPickerUtility color;
 	UndoButton undo;
 	RedoButton redo;
+	ClearButton clear;
 	Save save;
 	Load load;
 	
@@ -69,10 +65,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 			}});
 		//ウィンドウの表示
 		f.setVisible(true);
-		//ファイル読み込み
-		//if(args.length == 1)
-			//f.load(args[0]);
-		//f.load("paint.dat");
 	}
 	
 	//コンストラクタの宣言(Paintインスタンス作成時に実行される)
@@ -129,6 +121,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		undo = new UndoButton(this, objList);
 		//Redo
 		redo = new RedoButton(this, objList, undo);
+		//Clear
+		clear = new ClearButton(this, objList);
 		//Load
 		load = new Load(this, objList);
 		//Save
@@ -139,18 +133,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		
 		//描画時刻の初期化
 		now = old = 0;
-	}
-	
-	public void save(String fname) {
-		try {
-			FileOutputStream fos = new FileOutputStream(fname);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(objList);
-			oos.close();
-			fos.close();
-		}catch(IOException e) {
-			System.err.println("ファイルへの書き込みに失敗しました。");
-		}
 	}
 	
 	//描画(フレームごと)
@@ -179,12 +161,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener, A
 		//バッファされたイメージを描画
 		g.drawImage(offImage, 0, 0, 800, 600, this);
 
-	}
-	
-	//終了ボタン
-	@Override public void actionPerformed(ActionEvent e) {
-		save("paint.dat");
-		System.exit(0);
 	}
 	
 	//押されたとき
