@@ -19,7 +19,7 @@ public class ExportImage extends ButtonUtility{
 	}
 	
 	@Override public void actionPerformed(ActionEvent e) {
-		BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(frame.getSize().width, frame.getSize().height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.getGraphics();
 		
 		frame.paint(g);
