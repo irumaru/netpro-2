@@ -12,7 +12,7 @@ public class Polyline extends Figure{
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		
-		g.drawPolyline(getCoordXs(), getCoordYs(), count);
+		g.drawPolyline(getCoordXArray(), getCoordYArray(), count);
 		/*
 		if(fill)
 			g.fillPolygon(getCoordXs(), getCoordYs(), count);

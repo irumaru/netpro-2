@@ -32,47 +32,49 @@ public class Coord implements Serializable{
 		this.y = y;
 	}
 	
-	public void setXY(Integer x, Integer y) {
+	public void addCoord(Integer x, Integer y) {
 		coordXList.add(x);
 		coordYList.add(y);
 	}
 	
-	public void forcusXY(int x, int y) {
+	public void addVirtualCoord(int x, int y) {
 		forcusX = x;
 		forcusY = y;
 	}
 	
-	private int[] getIntArray(ArrayList<Integer> coords, Integer forcus, Integer point) {
-		int[] coordsInt = new int[coords.size() + 2];
+	private int[] getCoordArray(ArrayList<Integer> coords, Integer forcus, Integer xy) {
+		int[] coordArray = new int[coords.size() + 2];
 		
-		coordsInt[0] = point;
-		System.out.println(point);
+		//0番目にmovetoで指定した基準点を代入
+		coordArray[0] = xy;
+		//次にcoordArrayを追加
 		for(int i = 0; i < coords.size(); i ++) {
-			coordsInt[i + 1] = coords.get(i);
+			coordArray[i + 1] = coords.get(i);
 		}
 		
 		count = coords.size() + 1;
 		
 		if(forcus != null) {
-			coordsInt[coords.size() + 1] = forcus;
-			count ++;//forcus分のカウントを追加
-			
+			//仮の点を末尾に追加
+			coordArray[coords.size() + 1] = forcus;
+			//仮の点のカウントを追加
+			count ++;
 			//仮の点は1度のみ表示
 			//ダブルクリックの2回目の点を無効化
 			forcus = null;
 		}
 		
-		return coordsInt;
+		return coordArray;
 	}
 	
-	protected int[] getCoordXs() {
-		int[] array = getIntArray(coordXList, forcusX, x);
+	protected int[] getCoordXArray() {
+		int[] array = getCoordArray(coordXList, forcusX, x);
 		forcusX = null;
 		return array;
 	}
 	
-	protected int[] getCoordYs() {
-		int[] array = getIntArray(coordYList, forcusY, y);
+	protected int[] getCoordYArray() {
+		int[] array = getCoordArray(coordYList, forcusY, y);
 		forcusY = null;
 		return array;
 	}

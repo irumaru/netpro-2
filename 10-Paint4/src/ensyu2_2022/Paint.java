@@ -196,9 +196,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			latestClick = System.currentTimeMillis();
 			
 			//点の追加
-			Polyline objp = (Polyline)obj;
-			objp.setXY(x, y);
-			obj = (Figure)objp;
+			obj.addCoord(x, y);
 			
 			repaint();
 			
@@ -290,9 +288,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		
 		//仮の座標を設定
 		if(mode == 3) {
-			Polyline objp = (Polyline)obj;
-			objp.forcusXY(x, y);
-			obj = (Figure)objp;
+			obj.addVirtualCoord(x, y);
 		}
 
 		repaint();
