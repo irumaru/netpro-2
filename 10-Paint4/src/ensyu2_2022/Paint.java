@@ -51,8 +51,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	private Image offImage;
 	private Graphics gv;
 	
-	//static Integer = 800;
-	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
 		//ペイントインスタンスを作成して格納
@@ -119,7 +117,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		//引数でメニュー内容を指示
 		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		//画面上に図形の設定項目を追加
-		shape = new ChoiceFieldUtility(this, "図形", new String []{"円", "楕円", "四角", "多角形", "線", "折れ線"});
+		shape = new ChoiceFieldUtility(this, "図形", new String []{"丸", "円", "楕円", "四角", "多角形", "線", "折れ線"});
 		//画面上にカラーピッカーを開いて色を選択するボタンを追加
 		color = new ColorPickerUtility(this);
 		//Undo
@@ -217,22 +215,25 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		//描画開始
 		Integer s = shape.getChoice();
 		
-		if(s == 0) { //円
+		if(s == 0) {
+			mode = 1;
+			obj = new Dot();
+		}else if(s == 1) { //円
 			mode = 2;
 			obj = new Circle();
-		}else if(s == 1) {
+		}else if(s == 2) {
 			mode = 2;
 			obj = new Oval();
-		}else if(s == 2) { //四角
+		}else if(s == 3) { //四角
 			mode = 2;
 			obj = new Rect();
-		}else if(s == 3) {//多角形
+		}else if(s == 4) {//多角形
 			mode = 3;
 			obj = new Polygon();
-		}else if(s == 4) { //線
+		}else if(s == 5) { //線
 			mode = 2;
 			obj = new Line();
-		}else if(s == 5) { //折れ線
+		}else if(s == 6) { //折れ線
 			mode = 3;
 			obj = new Polyline();
 		}else {
