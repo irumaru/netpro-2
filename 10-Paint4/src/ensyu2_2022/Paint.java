@@ -23,7 +23,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	//CheckboxGroup cbg; //メニュー
 	//Checkbox c1, c2, c3, c4; //メニューの要素
 	//Button end; //終了ボタン
-	int mode = 0; //描画モード(1: 1点指定図形, 2: 2点指定図形)
+	int mode = 0; //描画モード(1: 1点指定図形, 2: 2点指定図形, 3: n点指定)
+	//クリック時間
+	long latestClick = 0;
 	
 	//上記と同じインスタンスを格納するプロパティを宣言
 	//実際に描画する図形
@@ -163,24 +165,48 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		
 		//バッファされたイメージを描画
 		g.drawImage(offImage, 0, 0, 800, 600, this);
-
+	}
+	
+	public void repaint() {
+		//描画を安定させるため、FPSを制限
+		now = System.currentTimeMillis();
+		if(33 < this.now - this.old) {
+			old = now;
+			super.repaint();
+		}
 	}
 	
 	//押されたとき
 	@Override public void mousePressed(MouseEvent e){
-		if(e.getButton() == MouseEvent.BUTTON3) {
-			return;
-		}
-		//Warning ほぼ全て書き換え
-		
-		//Checkbox c;
-		
 		x = e.getX();
 		y = e.getY();
 		
-		//c = cbg.getSelectedCheckbox(); //選択されたチェックボックスの取得
+		if(mode == 3) {
+			//ダブルクリック(2回目)で描画終了
+			if(System.currentTimeMillis() - latestClick < 200) {
+				//描画なし
+				mode = 0;
+				objList.add(obj);
+				obj = null;
+				//再描画
+				repaint();
+				//終了
+				return;
+			}
+			latestClick = System.currentTimeMillis();
+			
+			//点の追加
+			Polyline objp = (Polyline)obj;
+			objp.setXY(x, y);
+			obj = (Figure)objp;
+			
+			repaint();
+			
+			return;
+		}
+		
+		//描画開始
 		Integer s = shape.getChoice();
-		obj = null;
 		
 		if(s == 0) { //円
 			mode = 2;
@@ -195,7 +221,6 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			mode = 2;
 			obj = new Line();
 		}else if(s == 4) { //折れ線
-			System.out.println("折れ線");
 			mode = 3;
 			obj = new Polyline();
 		}else {
@@ -207,8 +232,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			obj.moveto(x, y);
 			obj.setColor(color.getColor());
 			obj.setFill(fill.getChoice() == 1);
-			repaint();
 		}
+		
+		repaint();
 		
 		//図形数を表示
 		//System.out.println("オブジェクト数: " + objList.size());
@@ -221,44 +247,25 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	}
 	//離されたとき
 	@Override public void mouseReleased(MouseEvent e){
-		if(e.getButton() == MouseEvent.BUTTON3) {
-			return;
-		}
-		
 		x = e.getX();
 		y = e.getY();
 		
-		if(mode == 1)
+		if(mode == 1) {
 			obj.moveto(x, y);
-		else if(mode == 2)
+		}else if(mode == 2) {
 			obj.setWH(x - obj.x, y - obj.y);
-		
-		if(mode >= 1) {
-			objList.add(obj);//最後尾に追加
-			obj = null;
 		}
 		
-		mode = 0;
+		if(mode == 1 || mode == 2) {
+			objList.add(obj);
+			obj = null;
+			mode = 0;
+		}
 		
 		repaint();
 	}
 	//クリックされた
-	@Override public void mouseClicked(MouseEvent e){
-		if(e.getButton() == MouseEvent.BUTTON1) {
-			return;
-		}
-		
-		x = e.getX();
-		y = e.getY();
-		
-		if(mode == 3) {
-			System.out.println("Enter 3");
-			
-			Polyline objp = (Polyline)obj;
-			objp.setXY(x, y);
-			obj = (Figure)objp;
-		}
-	}
+	@Override public void mouseClicked(MouseEvent e){}
 	//Windowに入った
 	@Override public void mouseEntered(MouseEvent e){}
 	//WIndowを出た
@@ -272,19 +279,22 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			obj.moveto(x, y);
 		}else if(mode == 2) {
 			obj.setWH(x - obj.x, y - obj.y);//幅と高さの指定
-		}else if(mode == 3) {
+		}
+
+		repaint();
+	}
+	//移動
+	@Override public void mouseMoved(MouseEvent e){
+		x = e.getX();
+		y = e.getY();
+		
+		//仮の座標を設定
+		if(mode == 3) {
 			Polyline objp = (Polyline)obj;
 			objp.forcusXY(x, y);
 			obj = (Figure)objp;
 		}
-		
-		//描画を安定させるため、FPSを制限
-		now = System.currentTimeMillis();
-		if(33 < this.now - this.old) {
-			repaint();
-			old = now;
-		}
+
+		repaint();
 	}
-	//移動
-	@Override public void mouseMoved(MouseEvent e){}
 }

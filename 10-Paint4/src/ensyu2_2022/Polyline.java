@@ -58,9 +58,16 @@ public class Polyline extends Figure{
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		
+		g.drawPolyline(getCoordXs(), getCoordYs(), count);
+		/*
 		if(fill)
 			g.fillPolygon(getCoordXs(), getCoordYs(), count);
 		else
 			g.drawPolyline(getCoordXs(), getCoordYs(), count);
+		*/
+		
+		//仮の点は1度のみ表示
+		//ダブルクリックの2回目の点を無効化
+		forcusX = forcusY = null;
 	}
 }
