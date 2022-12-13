@@ -192,7 +192,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		
 		if(mode == 3) {
 			//ダブルクリック(2回目)で描画終了
-			if(System.currentTimeMillis() - latestClick < 200) {
+			if(System.currentTimeMillis() - latestClick < 300) {
 				//描画なし
 				mode = 0;
 				objList.add(obj);
