@@ -51,6 +51,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	private Image offImage;
 	private Graphics gv;
 	
+	//static Integer = 800;
+	
 	//mainクラスメソッドを宣言(起動時に実行される)
 	public static void main(String[] args){
 		//ペイントインスタンスを作成して格納
@@ -138,21 +140,30 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		
 		//描画時刻の初期化
 		now = old = 0;
+		
+		width = height = 0;
 	}
+	
+	Integer width, height, oldWidth, oldHeight;
 	
 	//描画(フレームごと)
 	@Override public void paint(Graphics g){
 		//ダブルバッファリング
 		//http://www.gamesite8.com/archives/615401.html
 		
+		oldWidth = width;
+		oldHeight = height;
+		width = getSize().width;
+		height = getSize().height;
+		
 		//イメージバッファ生成
-		if(offImage == null) {
-			offImage = createImage(800, 600);
+		if(offImage == null || height != oldHeight || width != oldWidth) {
+			offImage = createImage(width, height);
 			gv = offImage.getGraphics();
 		}
 		
 		//ウィンドウに合わせて四角で初期化
-		gv.clearRect(0,  0, 800, 600);
+		gv.clearRect(0, 0, width, height);
 		
 		//各種図形を描画
 		Figure f;
@@ -164,7 +175,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		if(mode >= 1) obj.paint(gv);
 		
 		//バッファされたイメージを描画
-		g.drawImage(offImage, 0, 0, 800, 600, this);
+		g.drawImage(offImage, 0, 0, width, height, this);
 	}
 	
 	public void repaint() {
