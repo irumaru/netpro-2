@@ -22,8 +22,6 @@ public class Circle extends Figure {
 		else
 			//塗りつぶしなし
 			g.drawOval(x - r, y - r, r * 2, r * 2);
-		
-		//printOutline(g);
 	}
 	
 	private int getRadius() {

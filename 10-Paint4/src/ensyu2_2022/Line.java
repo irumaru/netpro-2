@@ -9,20 +9,26 @@ public class Line extends Figure{
 		super.paint(g);
 		
 		g.drawLine(x, y, x + width, y + height);
-		
-		//printOutline(g);
 	}
 	
 	public int getOutlineX() {
-		return x;
+		if(width < 0) {
+			return x + width;
+		}else {
+			return x;
+		}
 	}
 	public int getOutlineY() {
-		return y;
+		if(height < 0) {
+			return y + height;
+		}else {
+			return y;
+		}
 	}
 	public int getOutlineW() {
-		return width;
+		return Math.abs(width);
 	}
 	public int getOutlineH() {
-		return height;
+		return Math.abs(height);
 	}
 }

@@ -17,6 +17,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	//FigureインスタンスとFigureクラスを継承したクラスのインスタンスを格納するリスト状のプロパティを、ArrayList型で宣言
 	//全ての図形は、objListへ格納される
 	ArrayList<Figure> objList;
+	ArrayList<ArrayList> objHistory;
 	//図形の基準点x,yプロパティを宣言
 	int x, y;
 	
@@ -195,6 +196,10 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		}
 	}
 	
+	public void forceRepaint() {
+		super.repaint();
+	}
+	
 	//押されたとき
 	@Override public void mousePressed(MouseEvent e){
 		x = e.getX();
@@ -211,7 +216,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 					objList.add(obj);
 					obj = null;
 					//再描画
-					repaint();
+					forceRepaint();
 					//終了
 					return;
 				}
@@ -220,7 +225,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 				//点の追加
 				obj.addCoord(x, y);
 				
-				repaint();
+				forceRepaint();
 				
 				return;
 			}
@@ -277,9 +282,25 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 					break;
 				}
 			}
-		}
+		}/*else if(o == 2) {
+			//一致する最初の図形を取得
+			Figure objt;
+			for(int i = 0; i < objList.size(); i ++) {
+				objt = objList.get(i);
+				
+				int ox = objt.getOutlineX();
+				int oy = objt.getOutlineY();
+				int ow = objt.getOutlineW();
+				int oh = objt.getOutlineH();
+				
+				if(ox < x && x < ox + ow && oy < y && y < oy + oh) {
+					objt.setColor(color.getColor());
+					break;
+				}
+			}
+		}*/
 		
-		repaint();
+		forceRepaint();
 		
 		//図形数を表示
 		//System.out.println("オブジェクト数: " + objList.size());
@@ -315,7 +336,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			}
 		}
 		
-		repaint();
+		forceRepaint();
 	}
 	//クリックされた
 	@Override public void mouseClicked(MouseEvent e){}
@@ -352,8 +373,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		//仮の座標を設定
 		if(mode == 3) {
 			obj.addVirtualCoord(x, y);
+			repaint();
 		}
-
-		repaint();
 	}
 }

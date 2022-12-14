@@ -12,8 +12,8 @@ public class Oval extends Figure{
 		super.paint(g);
 		
 		//楕円に外接する四角形
-		int width = (int)(Math.sqrt((double)2)*Math.abs(this.width))*2;
-		int height = (int)(Math.sqrt((double)2)*Math.abs(this.height))*2;
+		int width = getCenterToOutline(this.width);
+		int height = getCenterToOutline(this.height);
 
 		//円の描画
 		if(fill)
@@ -22,8 +22,6 @@ public class Oval extends Figure{
 		else
 			//塗りつぶしなし
 			g.drawOval(x - (width / 2), y - (height / 2), width, height);
-		
-		//printOutline(g);
 	}
 	
 	private int getCenterToOutline(int wh) {
