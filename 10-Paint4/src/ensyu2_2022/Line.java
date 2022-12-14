@@ -5,6 +5,7 @@ import java.awt.Graphics;
 public class Line extends Figure{
 	Line(){}
 	
+	//線の描画
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -12,7 +13,8 @@ public class Line extends Figure{
 	}
 	
 	public int getOutlineX() {
-		if(width < 0) {
+		if(width < 0) {//横幅が-のとき
+			//基準点+横幅
 			return x + width;
 		}else {
 			return x;
@@ -26,9 +28,11 @@ public class Line extends Figure{
 		}
 	}
 	public int getOutlineW() {
+		//横幅の絶対値
 		return Math.abs(width);
 	}
 	public int getOutlineH() {
+		//高さの絶対値
 		return Math.abs(height);
 	}
 }

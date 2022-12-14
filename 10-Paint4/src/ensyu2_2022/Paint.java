@@ -302,9 +302,11 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			}
 		}else if(o == 1) {//図形移動モード
 			//移動終了
-			//図形を移動(マウスのクリック座標と図形の基準点の差も考慮)
-			objSelect.moveto(x + objDifferenceX, y + objDifferenceY);
-			objSelect = null;
+			if(objSelect != null) {
+				//図形を移動(マウスのクリック座標と図形の基準点の差も考慮)
+				objSelect.moveto(x + objDifferenceX, y + objDifferenceY);
+				objSelect = null;
+			}
 		}
 		
 		//再描画

@@ -54,24 +54,31 @@ public class Figure extends Coord{
 		this.height = height;
 	}
 	
+	//図形により外側の四角形の座標計算方法が違うため、子クラス(図形ごと)で計算
+	//図形に外接する四角形の基準点(左上)を指定
 	public int getOutlineX() {
 		return 0;
 	}
 	public int getOutlineY() {
 		return 0;
 	}
+	//図形に外接する四角形の大きさ(右上)を指定
 	public int getOutlineW() {
 		return 0;
 	}
 	public int getOutlineH() {
 		return 0;
 	}
+	
+	//外接する四角を描画
 	public void printOutline(Graphics g) {
+		//薄めの赤
 		g.setColor(new Color(255, 100, 100));
+		//外接する四角を描画
 		g.drawRect(getOutlineX(), getOutlineY(), getOutlineW(), getOutlineH());
 	}
 	
-	//色を適用
+	//図形に色を適用
 	public void paint(Graphics g) {
 		g.setColor(color);
 	}

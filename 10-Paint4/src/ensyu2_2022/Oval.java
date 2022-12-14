@@ -6,7 +6,7 @@ public class Oval extends Figure{
 	//コンストラクタ未使用
 	Oval(){}
 	
-	//円の描画
+	//楕円の描画
 	@Override public void paint(Graphics g){
 		//スーパークラス(Figure)のインスタンスのメソッドを呼び出し
 		super.paint(g);
@@ -24,9 +24,11 @@ public class Oval extends Figure{
 			g.drawOval(x - (width / 2), y - (height / 2), width, height);
 	}
 	
+	//楕円に外接する四角形の半分の大きさを取得
 	private int getCenterToOutline(int wh) {
 		return (int)(Math.sqrt((double)2)*Math.abs(wh))*2;
 	}
+	
 	public int getOutlineX() {
 		return x - (getCenterToOutline(width) / 2);
 	}

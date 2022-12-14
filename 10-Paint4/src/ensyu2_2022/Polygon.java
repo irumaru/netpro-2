@@ -3,6 +3,7 @@ package ensyu2_2022;
 import java.awt.Graphics;
 
 public class Polygon extends Figure{
+	//多角形の描画
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -11,7 +12,6 @@ public class Polygon extends Figure{
 		}else
 			g.drawPolygon(getCoordXArray(), getCoordYArray(), count);
 	}
-	
 	
 	public int getOutlineX() {
 		return CustomMath.min(count, getCoordXArray());

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 public class Polyline extends Figure{
 	Polyline(){}
 	
+	//折れ線の描画
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		

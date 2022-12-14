@@ -11,10 +11,13 @@ public class ButtonUtility extends Utility implements ActionListener{
 	ButtonUtility(Frame frame, String labelName, String buttonName){
 		super(frame, labelName);
 		
+		//buttonインスタンスを生成
 		button = new Button(buttonName);
+		
 		//アクションリスナーとして自インスタンスを指定
 		button.addActionListener(this);
 		
+		//パネルにボタンを追加
 		panel.add(button);
 	}
 	

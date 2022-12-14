@@ -3,10 +3,7 @@ package ensyu2_2022;
 import java.awt.Graphics;
 
 public class Dot extends Figure{
-	//Integer size;
-	
 	Dot(){
-		//size = 10;
 		width = height = 10;
 	}
 	

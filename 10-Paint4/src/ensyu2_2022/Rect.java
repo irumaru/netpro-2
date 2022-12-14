@@ -5,13 +5,14 @@ import java.awt.Graphics;
 public class Rect extends Figure{
 	Rect(){}
 	
-	//四角の描画
+	//四角形の描画
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 		
-		//GraphicsのRect系に合わせるために値を変更するため、ローカル変数へ複製
+		//左上の座標を取得
 		int x = getOutlineX();
 		int y = getOutlineY();
+		//絶対値で取得
 		int width = getOutlineW();
 		int height = getOutlineH();
 			

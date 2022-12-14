@@ -24,9 +24,11 @@ public class Circle extends Figure {
 			g.drawOval(x - r, y - r, r * 2, r * 2);
 	}
 	
+	//半径を取得
 	private int getRadius() {
 		return (int)Math.sqrt((double)(width * width + height * height));
 	}
+	
 	public int getOutlineX() {
 		return x - getRadius();
 	}
