@@ -30,6 +30,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	//上記と同じインスタンスを格納するプロパティを宣言
 	//実際に描画する図形
 	Figure obj;
+	Figure objSelect = null;
 	
 	//描画時刻
 	long now, old;
@@ -40,6 +41,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	// TextFieldUtility height;
 	ChoiceFieldUtility fill;
 	ChoiceFieldUtility shape;
+	ChoiceFieldUtility operation;
 	ColorPickerUtility color;
 	UndoButton undo;
 	RedoButton redo;
@@ -114,6 +116,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		//画面上に図形の高さの設定項目を追加
 		// height = new TextFieldUtility(this, "高さ", "80");
 		//画面上に塗りつぶしの設定項目を追加
+		//操作方法を選択
+		operation = new ChoiceFieldUtility(this, "操作", new String []{"描画", "移動"});
 		//引数でメニュー内容を指示
 		fill = new ChoiceFieldUtility(this, "塗りつぶし", new String []{"なし", "塗りつぶし"});
 		//画面上に図形の設定項目を追加
@@ -155,7 +159,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		height = getSize().height;
 		
 		//イメージバッファ生成
-		if(offImage == null || height != oldHeight || width != oldWidth) {
+		if(offImage == null || !height.equals(oldHeight) || !width.equals(oldWidth)) {
+			System.out.println("update");
 			offImage = createImage(width, height);
 			gv = offImage.getGraphics();
 		}
@@ -190,61 +195,75 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		x = e.getX();
 		y = e.getY();
 		
-		if(mode == 3) {
-			//ダブルクリック(2回目)で描画終了
-			if(System.currentTimeMillis() - latestClick < 300) {
-				//描画なし
-				mode = 0;
-				objList.add(obj);
-				obj = null;
-				//再描画
+		int o = operation.getChoice();
+		
+		if(o == 0) {
+			if(mode == 3) {
+				//ダブルクリック(2回目)で描画終了
+				if(System.currentTimeMillis() - latestClick < 300) {
+					//描画なし
+					mode = 0;
+					objList.add(obj);
+					obj = null;
+					//再描画
+					repaint();
+					//終了
+					return;
+				}
+				latestClick = System.currentTimeMillis();
+				
+				//点の追加
+				obj.addCoord(x, y);
+				
 				repaint();
-				//終了
+				
 				return;
 			}
-			latestClick = System.currentTimeMillis();
 			
-			//点の追加
-			obj.addCoord(x, y);
+			//描画開始
+			Integer s = shape.getChoice();
 			
-			repaint();
+			if(s == 0) {//描画
+				mode = 1;
+				obj = new Dot();
+			}else if(s == 1) { //円
+				mode = 2;
+				obj = new Circle();
+			}else if(s == 2) {
+				mode = 2;
+				obj = new Oval();
+			}else if(s == 3) { //四角
+				mode = 2;
+				obj = new Rect();
+			}else if(s == 4) {//多角形
+				mode = 3;
+				obj = new Polygon();
+			}else if(s == 5) { //線
+				mode = 2;
+				obj = new Line();
+			}else if(s == 6) { //折れ線
+				mode = 3;
+				obj = new Polyline();
+			}else {
+				System.err.println("存在しない図形番号です。");
+				System.exit(1);
+			}
 			
-			return;
-		}
-		
-		//描画開始
-		Integer s = shape.getChoice();
-		
-		if(s == 0) {
-			mode = 1;
-			obj = new Dot();
-		}else if(s == 1) { //円
-			mode = 2;
-			obj = new Circle();
-		}else if(s == 2) {
-			mode = 2;
-			obj = new Oval();
-		}else if(s == 3) { //四角
-			mode = 2;
-			obj = new Rect();
-		}else if(s == 4) {//多角形
-			mode = 3;
-			obj = new Polygon();
-		}else if(s == 5) { //線
-			mode = 2;
-			obj = new Line();
-		}else if(s == 6) { //折れ線
-			mode = 3;
-			obj = new Polyline();
-		}else {
-			System.err.println("存在しない図形番号です。");
-			System.exit(1);
-		}
-		
-		if(obj != null) {
-			obj.moveto(x, y);
-			obj.setColor(color.getColor());
-			obj.setFill(fill.getChoice() == 1);
+			if(obj != null) {
+				obj.moveto(x, y);
+				obj.setColor(color.getColor());
+				obj.setFill(fill.getChoice() == 1);
+			}
+		}else if(o == 1) {//移動
+			//一致する最初の図形を取得
+			Figure objt;
+			for(int i = 0; i < objList.size(); i ++) {
+				objt = objList.get(i);
+				if(objt.x < x && x < objt.x + objt.width && objt.y < y && y < objt.y + objt.height) {
+					objSelect = objt;
+					break;
+				}
+			}
 		}
 		
 		repaint();
@@ -263,16 +282,24 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		x = e.getX();
 		y = e.getY();
 		
-		if(mode == 1) {
-			obj.moveto(x, y);
-		}else if(mode == 2) {
-			obj.setWH(x - obj.x, y - obj.y);
-		}
+		int o = operation.getChoice();
 		
-		if(mode == 1 || mode == 2) {
-			objList.add(obj);
-			obj = null;
-			mode = 0;
+		if(o == 0) {
+			if(mode == 1) {
+				obj.moveto(x, y);
+			}else if(mode == 2) {
+				obj.setWH(x - obj.x, y - obj.y);
+			}
+			
+			if(mode == 1 || mode == 2) {
+				objList.add(obj);
+				obj = null;
+				mode = 0;
+			}
+		}else if(o == 1) {
+			if(objSelect != null) {
+				objSelect = null;
+			}
 		}
 		
 		repaint();
@@ -288,10 +315,18 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		x = e.getX();
 		y = e.getY();
 		
-		if(mode == 1) {
-			obj.moveto(x, y);
-		}else if(mode == 2) {
-			obj.setWH(x - obj.x, y - obj.y);//幅と高さの指定
+		int o = operation.getChoice();
+		
+		if(o == 0) {
+			if(mode == 1) {
+				obj.moveto(x, y);
+			}else if(mode == 2) {
+				obj.setWH(x - obj.x, y - obj.y);//幅と高さの指定
+			}
+		}else if(o == 1) {
+			if(objSelect != null) {
+				objSelect.moveto(x, y);
+			}
 		}
 
 		repaint();
