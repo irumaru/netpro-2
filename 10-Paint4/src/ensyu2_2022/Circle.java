@@ -13,7 +13,7 @@ public class Circle extends Figure {
 		//スーパークラス(Figure)のインスタンスのメソッドを呼び出し
 		super.paint(g);
 		
-		int r = (int)Math.sqrt((double)(width * width + height * height));
+		int r = getRadius();
 		
 		//円の描画
 		if(fill)
@@ -22,5 +22,23 @@ public class Circle extends Figure {
 		else
 			//塗りつぶしなし
 			g.drawOval(x - r, y - r, r * 2, r * 2);
+		
+		//printOutline(g);
+	}
+	
+	private int getRadius() {
+		return (int)Math.sqrt((double)(width * width + height * height));
+	}
+	public int getOutlineX() {
+		return x - getRadius();
+	}
+	public int getOutlineY() {
+		return y - getRadius();
+	}
+	public int getOutlineW() {
+		return getRadius() * 2;
+	}
+	public int getOutlineH() {
+		return getRadius() * 2;
 	}
 }

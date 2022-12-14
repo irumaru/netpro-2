@@ -22,5 +22,20 @@ public class Dot extends Figure{
 		else
 			//塗りつぶしなし
 			g.drawOval(x - width/2, y - height/2, width, height);
+		
+		//printOutline(g);
+	}
+	
+	public int getOutlineX() {
+		return x - (width / 2);
+	}
+	public int getOutlineY() {
+		return y - (height / 2);
+	}
+	public int getOutlineW() {
+		return width;
+	}
+	public int getOutlineH() {
+		return height;
 	}
 }

@@ -33,8 +33,8 @@ public class Coord implements Serializable{
 	}
 	
 	public void addCoord(Integer x, Integer y) {
-		coordXList.add(x);
-		coordYList.add(y);
+		coordXList.add(x - this.x);
+		coordYList.add(y - this.y);
 	}
 	
 	public void addVirtualCoord(int x, int y) {
@@ -49,7 +49,7 @@ public class Coord implements Serializable{
 		coordArray[0] = xy;
 		//次にcoordArrayを追加
 		for(int i = 0; i < coords.size(); i ++) {
-			coordArray[i + 1] = coords.get(i);
+			coordArray[i + 1] = coords.get(i) + xy;
 		}
 		
 		count = coords.size() + 1;

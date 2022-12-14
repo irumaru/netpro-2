@@ -31,6 +31,8 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 	//実際に描画する図形
 	Figure obj;
 	Figure objSelect = null;
+	int objDefaultX = 0;
+	int objDefaultY = 0;
 	
 	//描画時刻
 	long now, old;
@@ -173,6 +175,9 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 		for(int i = 0; i < objList.size(); i ++) {
 			f = objList.get(i);
 			f.paint(gv);
+			if(objSelect == f) {
+				f.printOutline(gv);
+			}
 		}
 		
 		if(mode >= 1) obj.paint(gv);
@@ -259,7 +264,15 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			Figure objt;
 			for(int i = 0; i < objList.size(); i ++) {
 				objt = objList.get(i);
-				if(objt.x < x && x < objt.x + objt.width && objt.y < y && y < objt.y + objt.height) {
+				
+				int ox = objt.getOutlineX();
+				int oy = objt.getOutlineY();
+				int ow = objt.getOutlineW();
+				int oh = objt.getOutlineH();
+				
+				if(ox < x && x < ox + ow && oy < y && y < oy + oh) {
+					objDefaultX = objt.x - x;
+					objDefaultY = objt.y - y;
 					objSelect = objt;
 					break;
 				}
@@ -325,7 +338,7 @@ public class Paint extends Frame implements MouseListener,MouseMotionListener{
 			}
 		}else if(o == 1) {
 			if(objSelect != null) {
-				objSelect.moveto(x, y);
+				objSelect.moveto(x + objDefaultX, y + objDefaultY);
 			}
 		}
 

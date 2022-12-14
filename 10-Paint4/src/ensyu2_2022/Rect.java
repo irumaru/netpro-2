@@ -10,25 +10,35 @@ public class Rect extends Figure{
 		super.paint(g);
 		
 		//GraphicsのRect系に合わせるために値を変更するため、ローカル変数へ複製
-		int x = this.x;
-		int y = this.y;
-		int width = this.width;
-		int height = this.height;
-		
-		//widthが-の値の時に反対側に拡張
-		if(width < 0) {
-			x = x + width;
-			width = - width;
-		}
-		//heightが-の値の時に反対側に拡張
-		if(height < 0) {
-			y = y + height;
-			height = - height;
-		}
+		int x = getOutlineX();
+		int y = getOutlineY();
+		int width = getOutlineW();
+		int height = getOutlineH();
 			
 		if(fill)
 			g.fillRect(x, y, width, height);
 		else
 			g.drawRect(x, y, width, height);
+	}
+	
+	public int getOutlineX() {
+		if(width < 0) {
+			return x + width;
+		}else {
+			return x;
+		}
+	}
+	public int getOutlineY() {
+		if(height < 0) {
+			return y + height;
+		}else {
+			return y;
+		}
+	}
+	public int getOutlineW() {
+		return Math.abs(width);
+	}
+	public int getOutlineH() {
+		return Math.abs(height);
 	}
 }

@@ -11,15 +11,9 @@ public class Oval extends Figure{
 		//スーパークラス(Figure)のインスタンスのメソッドを呼び出し
 		super.paint(g);
 		
-		//GraphicsのRect系に合わせるために値を変更するため、ローカル変数へ複製
-		int x = this.x;
-		int y = this.y;
-		int width = this.width;
-		int height = this.height;
-		
-		//楕円に内接する四角形
-		width = (int)(Math.sqrt((double)2)*Math.abs(width))*2;
-		height = (int)(Math.sqrt((double)2)*Math.abs(height))*2;
+		//楕円に外接する四角形
+		int width = (int)(Math.sqrt((double)2)*Math.abs(this.width))*2;
+		int height = (int)(Math.sqrt((double)2)*Math.abs(this.height))*2;
 
 		//円の描画
 		if(fill)
@@ -28,5 +22,23 @@ public class Oval extends Figure{
 		else
 			//塗りつぶしなし
 			g.drawOval(x - (width / 2), y - (height / 2), width, height);
+		
+		//printOutline(g);
+	}
+	
+	private int getCenterToOutline(int wh) {
+		return (int)(Math.sqrt((double)2)*Math.abs(wh))*2;
+	}
+	public int getOutlineX() {
+		return x - (getCenterToOutline(width) / 2);
+	}
+	public int getOutlineY() {
+		return y - (getCenterToOutline(height) / 2);
+	}
+	public int getOutlineW() {
+		return getCenterToOutline(width);
+	}
+	public int getOutlineH() {
+		return getCenterToOutline(height);
 	}
 }

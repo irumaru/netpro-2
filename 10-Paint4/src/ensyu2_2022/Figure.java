@@ -54,6 +54,23 @@ public class Figure extends Coord{
 		this.height = height;
 	}
 	
+	public int getOutlineX() {
+		return 0;
+	}
+	public int getOutlineY() {
+		return 0;
+	}
+	public int getOutlineW() {
+		return 0;
+	}
+	public int getOutlineH() {
+		return 0;
+	}
+	public void printOutline(Graphics g) {
+		g.setColor(new Color(255, 100, 100));
+		g.drawRect(getOutlineX(), getOutlineY(), getOutlineW(), getOutlineH());
+	}
+	
 	//色を適用
 	public void paint(Graphics g) {
 		g.setColor(color);
