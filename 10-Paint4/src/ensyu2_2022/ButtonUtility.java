@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//ボタンを画面上に追加する
 public class ButtonUtility extends Utility implements ActionListener{
 	Button button;
 	

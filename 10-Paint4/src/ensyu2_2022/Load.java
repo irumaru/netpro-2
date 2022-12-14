@@ -21,6 +21,7 @@ public class Load extends ButtonUtility{
 	
 	@SuppressWarnings("unchecked")
 	
+	//obj
 	public void load(String fname) {
 		try {
 			FileInputStream fis = new FileInputStream(fname);

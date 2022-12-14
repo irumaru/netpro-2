@@ -3,6 +3,7 @@ package ensyu2_2022;
 import java.awt.Choice;
 import java.awt.Frame;
 
+//選択ボックスを画面上に追加する
 public class ChoiceFieldUtility extends Utility{
 	//選択フィールドを格納
 	Choice choice;

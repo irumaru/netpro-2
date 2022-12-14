@@ -11,7 +11,9 @@ public class ColorPickerUtility extends ButtonUtility{
 	Color color;
 	
 	ColorPickerUtility(Frame frame){
+		//ボタンを追加
 		super(frame, "色指定", "詳細");
+		
 		this.frame = frame;
 		//色の初期値を設定
 		this.color = new Color(100, 255, 255);

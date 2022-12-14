@@ -55,14 +55,15 @@ public class Figure extends Coord{
 	}
 	
 	//図形により外側の四角形の座標計算方法が違うため、子クラス(図形ごと)で計算
-	//図形に外接する四角形の基準点(左上)を指定
+	//図形移動時にわかりやすく外接する四角形を表示するために使用
+	//図形に外接する四角形の基準点(左上)を取得
 	public int getOutlineX() {
 		return 0;
 	}
 	public int getOutlineY() {
 		return 0;
 	}
-	//図形に外接する四角形の大きさ(右上)を指定
+	//図形に外接する四角形の大きさ(右上)を取得
 	public int getOutlineW() {
 		return 0;
 	}

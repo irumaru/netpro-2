@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
 
+//全てのボタンなどをラベルとセットで画面の中央上部から配置していくひな形
 public class Utility {
 	//ラベルとインプットフィールドをセットにしたレイアウトを格納
 	Panel panel;
