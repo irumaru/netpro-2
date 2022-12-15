@@ -1,5 +1,4 @@
 //オブジェクトの基準点
-
 package ensyu2_2022;
 
 import java.io.Serializable;
