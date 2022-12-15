@@ -10,13 +10,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+//画像へ書き出し
 public class ExportImage extends ButtonUtility{
 	Frame frame;
 	
 	ExportImage(Frame frame){
 		//ボタンを追加
 		super(frame, "", "画像に出力");
-		
+		//現在のウィンドウサイズ取得用
 		this.frame = frame;
 	}
 	
@@ -49,8 +50,8 @@ public class ExportImage extends ButtonUtility{
 			//imageをpngファイル形式でpathへ書き込み
 			ImageIO.write(image, "png", new File(path));
 		} catch (IOException e1) {
-			// TODO 自動生成された catch ブロック
-			e1.printStackTrace();
+			// 例外
+			System.err.println("画像ファイルへの出力に失敗しました。");
 		}
 	}
 }

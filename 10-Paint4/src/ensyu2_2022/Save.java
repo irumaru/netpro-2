@@ -7,8 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-//import java.io.FileExtensionFilter;
 
+//ファイル書き込み
 public class Save extends ButtonUtility{
 	ArrayList<Figure> objList;
 	Frame frame;
@@ -16,17 +16,20 @@ public class Save extends ButtonUtility{
 	Load load;
 	
 	Save(Frame frame, ArrayList<Figure> objList, Load load){
+		//ボタンを追加
 		super(frame, "", "保存");
+		//再描画用
 		this.frame = frame;
 		this.objList = objList;
 		this.load = load;
 	}
 	
-	//上書き保存
+	//pathで指定されたファイルへobjListを保存
 	public void save(String path) {
 		try {
 			FileOutputStream fos = new FileOutputStream(path);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			//objListをファイル(ObjectStream)へ書き込み
 			oos.writeObject(objList);
 			oos.close();
 			fos.close();
@@ -35,13 +38,15 @@ public class Save extends ButtonUtility{
 		}
 	}
 	
-	//名前を付けて保存
+	//ダイアログを使用してファイルを書き込む
 	public void saveAs() {
+		//ファイルダイアログを書き込みモードで表示
 		FileDialog file = new FileDialog(frame, "保存", FileDialog.SAVE);
-		//file.setFileFilter(new FileNameExtensionFilter("PaintData(*.dat)", "dat"));
+		//Loadされていなく、load.pathプロパティ(読み込み時のパス)が空の時
 		if(load.path == null) {
 			load.path = "*.dat"; //ファイル拡張子の表示(気休め程度)
 		}
+		//ダイアログへ候補(デフォルト)として表示するパスを指定
 		file.setFile(load.path);
 		file.setVisible(true);//表示&入力待ち
 		
@@ -56,6 +61,7 @@ public class Save extends ButtonUtility{
 		save(path);
 	}
 	
+	//クリックしてファイル書き込み
 	@Override public void actionPerformed(ActionEvent e) {
 		saveAs();
 	}

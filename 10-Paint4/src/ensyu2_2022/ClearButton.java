@@ -17,7 +17,7 @@ public class ClearButton extends ButtonUtility{
 	}
 	
 	@Override public void actionPerformed(ActionEvent e) {
-		//画面をクリア
+		//全ての図形を削除
 		objList.clear();
 		//画面を更新
 		frame.forceRepaint();

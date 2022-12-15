@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JColorChooser;
 
+//図形の色指定
 public class ColorPickerUtility extends ButtonUtility{
 	Frame frame;
 	Color color;
